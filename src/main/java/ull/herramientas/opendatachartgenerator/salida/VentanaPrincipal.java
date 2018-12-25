@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 import java.awt.Font;
 
 import ull.herramientas.opendatachartgenerator.Dataset;
@@ -16,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 import javax.swing.JComboBox;
 
 /**
@@ -66,15 +68,20 @@ public class VentanaPrincipal {
 		//Creación de radio botón de conjunto de datos de población de Barrios de Santa Cruz de Tenerife
 		JRadioButton rdbtnCsv = new JRadioButton(".csv");
 		rdbtnCsv.setBounds(127, 143, 67, 23);
-		frame.getContentPane().add(rdbtnCsv);
+		//frame.getContentPane().add(rdbtnCsv);
 
 		JRadioButton rdbtntxt = new JRadioButton(".txt");
 		rdbtntxt.setBounds(196, 143, 67, 23);
-		frame.getContentPane().add(rdbtntxt);
+		//frame.getContentPane().add(rdbtntxt);
 
-		JRadioButton rdbtnxls = new JRadioButton(".xls");
+		JRadioButton rdbtnxls = new JRadioButton("Es .xls");
 		rdbtnxls.setBounds(265, 143, 63, 23);
 		frame.getContentPane().add(rdbtnxls);
+		
+		JTextField textField = new JTextField();
+		textField.setBounds(100, 130, 100, 30);
+		frame.getContentPane().add(textField);
+		textField.setColumns(5);
 
 		rdbtnCsv.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -128,8 +135,13 @@ public class VentanaPrincipal {
 				Dataset dataset = null;
 				try {
 					String urlDataset = "";
-					if (comboBox.getSelectedIndex() == 0)
-					{
+					
+					urlDataset = textField.getText();
+					
+					if(rdbtnxls.isSelected()){ dataset = new Dataset(urlDataset,1); }
+					else { dataset = new Dataset(urlDataset,0); }
+					
+					if (comboBox.getSelectedIndex() == 0){
 						if (rdbtnCsv.isSelected())
 						{
 							urlDataset = "http://www.santacruzdetenerife.es/opendata/dataset/8363b662-0bdc-47e1-b9f6-65b536714f29/resource/ee814891-ba52-4e7c-b9e6-017c1bc43b6b/download/barrios.csv";
@@ -141,11 +153,11 @@ public class VentanaPrincipal {
 							dataset = new Dataset(urlDataset,0);
 						}
 
-						else if (rdbtnxls.isSelected())
+						/*else if (rdbtnxls.isSelected())
 						{
 							urlDataset="http://www.santacruzdetenerife.es/opendata/dataset/8363b662-0bdc-47e1-b9f6-65b536714f29/resource/1f86d613-d406-418e-8757-46bea561d9ed/download/barrios.xls";
 							dataset = new Dataset(urlDataset,1);
-						}
+						}*/
 					}
 					//Se crea la ventana de selección de gráficos de la información del conjunto de datos
 					SalidaGraficosFrame seleccion_graficos = new SalidaGraficosFrame(dataset);
